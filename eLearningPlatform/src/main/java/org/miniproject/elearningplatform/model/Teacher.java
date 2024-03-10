@@ -1,6 +1,8 @@
 package org.miniproject.elearningplatform.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.FetchType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -24,13 +26,14 @@ import java.util.Objects;
 @Data
 public class Teacher extends User {
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "course_id")
-    protected Course courseTeaching;
+    @JsonIgnore
+    protected Course course;
 
-    public Teacher(String fname, String lname, String email, LocalDate birthdate, UserAddress address, UserPhoneNumber phoneNumber, Course courseTeaching) throws EmailValidationException, PhoneNumberValidationException {
+    public Teacher(String fname, String lname, String email, LocalDate birthdate, UserAddress address, UserPhoneNumber phoneNumber, Course course) throws EmailValidationException, PhoneNumberValidationException {
         super(fname, lname, email, birthdate, address, phoneNumber);
-        this.courseTeaching = courseTeaching;
+        this.course = course;
     }
 
 }

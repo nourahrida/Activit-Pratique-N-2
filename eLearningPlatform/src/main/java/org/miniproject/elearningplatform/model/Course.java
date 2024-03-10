@@ -1,5 +1,6 @@
 package org.miniproject.elearningplatform.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -18,7 +19,6 @@ import java.util.Set;
 @Data
 public class Course {
     // Constant
-    protected final String TeacherUser_Violation_Exception_Message = "The user you are trying to add is not a user with type 'Teacher'. Please verify and try again.";
     @Getter
     @Column
     @Id
@@ -35,13 +35,12 @@ public class Course {
     @Column()
     protected String description;
 
-    // One to Many -> A Course can be taught by many teachers
-    @Column
-    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
-    protected List<Teacher> teachers;
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<Teacher> teachers;
 
-    @Column
     @OneToMany(mappedBy = "course")
+    @JsonIgnore
     private Set<Enrollment> enrollments = new HashSet<>();
 
 

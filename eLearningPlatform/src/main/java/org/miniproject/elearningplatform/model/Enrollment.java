@@ -21,21 +21,23 @@ import java.util.Objects;
 @Data
 @Getter
 public class Enrollment {
+    @Transient
     protected final String Enrollment_Name = "ENR";
+    @Transient
     protected final String StudentUser_Violation_Exception_Message = "The user you are trying to add is not a user with type 'Student'. Please verify and try again.";
+    @Transient
     protected final String NegativeNumber_Violation_Exception_Message = "The Number that you are trying to use is not a positive number. Please verify and try again.";
+    @Transient
     protected final String GradeOutOfRange_Violation_Exception_Message = "The Grade that you are trying to use is out of range. Please verify that the grade is between 0 and 20 and try again.";
 
     @Column
     @Id
     protected String ID;
 
-    @Column
     @ManyToOne
     @JoinColumn(name = "student_id")
     private Student student;
 
-    @Column
     @ManyToOne
     @JoinColumn(name = "course_id")
     private Course course;

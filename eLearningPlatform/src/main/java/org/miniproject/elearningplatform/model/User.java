@@ -20,10 +20,12 @@ import java.util.Objects;
 @EqualsAndHashCode
 @ToString
 @SuperBuilder
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Inheritance(strategy = InheritanceType.JOINED)
 public class User {
     // Constants
+    @Transient
     protected final String Email_Validation_Exception_Message = "The email that has been entered is not valid, Please verify it!";
+    @Transient
     protected final String PhoneNumber_Validation_Exception_Message = "The phone number that has been entered is not valid, Please verify it!";
     @Getter
     @Column
@@ -46,13 +48,11 @@ public class User {
     @Column()
     @Getter
     protected int age;
-    @Column
     @Getter
     @Setter
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "userAddress")
     protected UserAddress address;
-    @Column
     @Getter
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "userPhoneNumber")
@@ -88,5 +88,11 @@ public class User {
         this.setBirthdate(birthdate);
         this.setAddress(address);
         this.setPhoneNumber(phoneNumber);
+    }
+    @PrePersist
+    protected void onPrePersist() {
+        if (this.ID == null || this.ID.isEmpty()) {
+            this.ID = AutoIdGenerator.generateAutoId(this.fname, this.lname);
+        }
     }
 }

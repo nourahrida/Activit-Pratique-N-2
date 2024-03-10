@@ -1,5 +1,6 @@
 package org.miniproject.elearningplatform.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.miniproject.elearningplatform.exception.EmailValidationException;
@@ -27,6 +28,7 @@ public class Student extends User {
     // this is a subClass of User
     @Column
     @OneToMany(mappedBy = "student")
+    @JsonIgnore
     private Set<Enrollment> enrollments = new HashSet<>();
 
 }
